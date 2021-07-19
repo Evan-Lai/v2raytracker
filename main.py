@@ -1,7 +1,7 @@
 
 import base64
 import http
-#!/usr/bin/env python
+import function
 #-*- coding:utf-8 -*-
 
 import os, sys
@@ -27,6 +27,9 @@ else:  #Python 3.x
 
 class Application_ui(Frame):
     #这个类仅实现界面生成功能，具体事件处理代码在子类Application中。
+    
+    import_win_text = ''
+    
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.master.title('V2rayTracker')
@@ -105,9 +108,39 @@ class Application(Application_ui):
         #TODO, Please finish the function here!
         pass
 
+    def create_import_window(self, event=None):
+        
+        ImportWin = {}
+        ImportWin['root'] = Tk()
+        ImportWin['root'].title('导入节点')
+        ImportWin['style'] = Style()
+        ImportWin['root'].geometry('604x360')
+
+        ImportWin['style'].configure('Label1.TLabel',anchor='w', font=('宋体',16))
+        ImportWin['label1'] = Label(ImportWin['root'], text='在下面框中粘入节点链接，一行一个', style='Label1.TLabel')
+        ImportWin['label1'].place(relx=0.013, rely=0.022, relwidth=0.556, relheight=0.058)
+
+        #ImportWin['Text1Var'] = StringVar(value='Text1')
+        ImportWin['Text1'] = Text(ImportWin['root'], font=('宋体',9),width=561,height=265)
+        ImportWin['Text1'].place(relx=0.013, rely=0.111, relwidth=0.929, relheight=0.736)
+
+        def text_information():
+            text = ImportWin['Text1'].get(0.0,END)
+            self.import_win_text = text
+            print(self.import_win_text)
+            ImportWin['root'].destroy()
+
+
+        ImportWin['style'].configure('cancel.TButton',font=('宋体',9))
+        ImportWin['cancel'] = Button(ImportWin['root'], text='取消',style='cancel.TButton',command=ImportWin['root'].destroy)
+        ImportWin['cancel'].place(relx=0.583, rely=0.889, relwidth=0.108, relheight=0.069)
+        ImportWin['style'].configure('sure.TButton',font=('宋体',9))
+        ImportWin['sure'] = Button(ImportWin['root'], text='确认',style='sure.TButton',command=text_information)
+        ImportWin['sure'].place(relx=0.715, rely=0.889, relwidth=0.108, relheight=0.069)
+
     def import_links_Cmd(self, event=None):
-        #TODO, Please finish the function here!
-        pass
+        
+        self.create_import_window()
 
 if __name__ == "__main__":
     top = Tk()
